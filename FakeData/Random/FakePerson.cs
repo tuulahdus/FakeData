@@ -11,8 +11,6 @@ using Newtonsoft.Json;
 namespace FakeData.Random {
     public class Person : IPerson {
         public string Initials { get; set; }
-
-        [JsonIgnore]
         public Gender Gender { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -23,8 +21,6 @@ namespace FakeData.Random {
         public string Mobile { get; set; }
         public DateTime? BirthDate { get; set; }
         public string PersonalIdNumber { get; set; }
-        [JsonIgnore]
-        public string Locale { get ; set ; }
     }
     public enum Gender {
         Male,
@@ -35,19 +31,24 @@ namespace FakeData.Random {
         public RandomPerson (string locale) {
             var bogusLocale = new CultureInfo(locale).ToBogusLocale();
             var address = new RandomAddress(locale);
+            var person = new Faker(bogusLocale).Person;
             _fakePerson = new Faker<Person> (bogusLocale)
-                .RuleFor (u => u.Gender, f => f.PickRandom<Gender> ())
-                .RuleFor (u => u.FirstName, (f, u) => f.Name.FirstName ())
-                .RuleFor (u => u.Initials, (f, u) => u.FirstName.Substring (0, 1))
-                .RuleFor (u => u.LastName, (f, u) => f.Name.LastName ())
-                .RuleFor (u => u.BirthDate, (f) => f.Date.Between (DateTime.Now.AddYears (-60), DateTime.Now.AddYears (-18))
-                    .TruncateToDayStart ())
-                .RuleFor (u => u.Phone, f => f.Phone.PhoneNumber ())
+                .CustomInstantiator((f) => { 
+                    var person = f.Person;
+                    return new Person {
+                        Gender = f.PickRandom<Gender>(),
+                        FirstName = person.FirstName,
+                        LastName = person.LastName,
+                        Initials = person.Initials(),
+                        Phone = person.Phone,
+                        Email = person.Email,
+                        BirthDate = person.DateOfBirth.TruncateToDayStart(),
+                        PersonalIdNumber = person.PersonIdNumber(bogusLocale)
+                    };
+                })
                 .RuleFor (u => u.Mobile, f => f.Phone.CellPhone())
-                .RuleFor (u => u.Email, (f, u) => f.Internet.Email (u.FirstName, u.LastName))
-                .RuleFor (u => u.BillingAddress, (f) => address.GetAddress())
-                .RuleFor (u => u.DeliveryAddress, (f, u) => address.GetAddress())
-                .RuleFor(u => u.PersonalIdNumber, (f) => f.Person.PersonIdNumber(bogusLocale));
+                .RuleFor (u => u.BillingAddress, () => address.GetAddress())
+                .RuleFor (u => u.DeliveryAddress, () => address.GetAddress());
         }
 
         public RandomPerson RuleFor<TProperty>(Expression<Func<Person, TProperty>> property, Func<Faker, Person, TProperty> setter){

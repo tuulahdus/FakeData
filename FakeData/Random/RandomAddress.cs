@@ -18,8 +18,6 @@ namespace FakeData.Random
 
         public RandomAddress (string culture) 
         {
-             //var languageCountry = culture.Split("_");
-             //Country = languageCountry[languageCountry.Length - 1].ToUpper();;
              _locale = new CultureInfo(culture);
              Country = new RegionInfo(_locale.LCID).TwoLetterISORegionName;
              

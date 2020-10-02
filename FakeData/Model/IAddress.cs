@@ -11,5 +11,7 @@ namespace FakeData.Model {
         public string StreetNumber2 { get; set; }
         public string ZipCode { get; set; }
 
+        public string CompleteStreetNumber(string format = "{0},{1},{2}");
+
     }
 }

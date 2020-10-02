@@ -1,3 +1,4 @@
+using System;
 using CsvHelper.Configuration.Attributes;
 using FakeData.Model;
 
@@ -15,5 +16,10 @@ namespace FakeData.Model {
         public string StreetNumber2 { get; set; }
         [Index(4)]
         public string ZipCode { get; set; }
+
+        public string CompleteStreetNumber(string format = @"{0},{1},{2}")
+        {
+            return String.Format(format, Street, StreetNumber, StreetNumber2).TrimEnd(',');
+        }
     }
 }

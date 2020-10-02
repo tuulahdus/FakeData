@@ -2,7 +2,7 @@ using System;
 using Bogus;
 
 namespace FakeData.Model {
-    public interface IPerson : ILocaleAware {
+    public interface IPerson {
         public string Initials { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

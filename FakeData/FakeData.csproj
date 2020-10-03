@@ -4,7 +4,9 @@
     <IsPackable>true</IsPackable>
   </PropertyGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources/Addresses/*.csv" />
+    <EmbeddedResource Include="Resources/Addresses/*.csv">
+    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Bogus" Version="31.0.1" />

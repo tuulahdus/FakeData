@@ -7,7 +7,7 @@
     <EmbeddedResource Include="Resources/Addresses/*.csv" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Bogus" Version="31.0.0" />
+    <PackageReference Include="Bogus" Version="31.0.1" />
     <PackageReference Include="CsvHelper" Version="15.0.5" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="3.1.6" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />

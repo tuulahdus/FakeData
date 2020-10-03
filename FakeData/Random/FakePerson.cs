@@ -31,7 +31,6 @@ namespace FakeData.Random {
         public RandomPerson (string locale) {
             var bogusLocale = new CultureInfo(locale).ToBogusLocale();
             var address = new RandomAddress(locale);
-            var person = new Faker(bogusLocale).Person;
             _fakePerson = new Faker<Person> (bogusLocale)
                 .CustomInstantiator((f) => { 
                     var person = f.Person;
